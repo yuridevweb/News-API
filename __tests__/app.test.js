@@ -56,18 +56,19 @@ describe('GET /api/articles/:article_id', () => {
           title: 'Eight pug gifs that remind me of mitch',
           topic: 'mitch',
           votes: 0,
+          comment_count: 2,
         })
       })
   })
-  test('status:200, matching article object with comment_count', () => {
+  /*   test('status:200, matching article object with comment_count', () => {
     return request(app)
       .get('/api/articles/3')
       .expect(200)
       .then(({ body }) => {
         const { count } = body
-        expect(count).toBe('2')
+        expect(count).toBe(2)
       })
-  })
+  }) */
 
   test('status:400, when article ID is not an integer', () => {
     return request(app)
@@ -151,6 +152,31 @@ describe('GET /api/topics', () => {
           expect(user).toEqual(
             expect.objectContaining({
               username: expect.any(String),
+            })
+          )
+        })
+      })
+  })
+})
+
+describe('GET /api/articles', () => {
+  test('status:200, responds with an array of article objects', () => {
+    return request(app)
+      .get('/api/articles')
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body
+        expect(articles).toBeInstanceOf(Array)
+        expect(articles).toHaveLength(12)
+        articles.forEach((article) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              author: expect.any(String),
+              body: expect.any(String),
+              created_at: expect.any(String),
+              title: expect.any(String),
+              topic: expect.any(String),
+              votes: expect.any(Number),
             })
           )
         })

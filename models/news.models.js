@@ -15,10 +15,10 @@ exports.selectArticleById = (article_id) => {
 }
 
 exports.commentsByArticle = (article_id) => {
-  const text = `SELECT * FROM comments WHERE article_id = $1;`
+  const text = `SELECT COUNT(*) FROM comments WHERE article_id = $1;`
   const values = [article_id]
   return db.query(text, values).then((result) => {
-    return result.rows.length
+    return result.rows[0]
   })
 }
 

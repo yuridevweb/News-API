@@ -23,8 +23,9 @@ exports.getArticleById = (req, res, next) => {
   Promise.all(promises)
     .then((results) => {
       const article = results[0]
-      article.comment_count = results[1]
-      res.status(200).send({ article })
+      const { count } = results[1]
+      //article.comment_count = count
+      res.status(200).send({ article, count })
     })
     .catch(next)
 }

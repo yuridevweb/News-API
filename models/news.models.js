@@ -13,3 +13,15 @@ exports.selectArticleById = (article_id) => {
     return result.rows[0]
   })
 }
+
+exports.updateArticle = (article_id, inc_votes) => {
+  const text =
+    'UPDATE articles SET votes = votes + $2 WHERE article_id = $1 RETURNING *;'
+  const values = [article_id, inc_votes]
+  if (inc_votes === undefined) {
+    return Promise.reject({ message: 'Invalid request', status: 400 })
+  }
+  return db.query(text, values).then((result) => {
+    return result.rows[0]
+  })
+}

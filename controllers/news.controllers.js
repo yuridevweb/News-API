@@ -7,10 +7,12 @@ const {
   selectArticles,
 } = require('../models/news.models')
 
-exports.getTopics = (req, res) => {
-  selectTopics().then((topics) => {
-    res.status(200).send({ topics: topics })
-  })
+exports.getTopics = (req, res, next) => {
+  selectTopics()
+    .then((topics) => {
+      res.status(200).send({ topics: topics })
+    })
+    .catch(next)
 }
 
 exports.getArticleById = (req, res, next) => {
@@ -41,15 +43,28 @@ exports.patchArticleById = (req, res, next) => {
     .catch(next)
 }
 
-exports.getUsers = (req, res) => {
-  selectUsers().then((users) => {
-    res.status(200).send({ users })
-  })
+exports.getUsers = (req, res, next) => {
+  selectUsers()
+    .then((users) => {
+      res.status(200).send({ users })
+    })
+    .catch(next)
 }
 
-exports.getArticles = (req, res) => {
+exports.getArticles = (req, res, next) => {
   selectArticles().then((articles) => {
-    console.log(articles, '<<<<<<<<<')
-    res.status(200).send({ articles })
+    const promises = []
+    articles.forEach((article) => {
+      promises.push(commentsByArticle(article.article_id))
+    })
+    Promise.all(promises)
+      .then((results) => {
+        let articleWithComments = articles.map((article, index) => {
+          article.comment_count = Number(results[index].count)
+          return article
+        })
+        res.status(200).send({ articles: articleWithComments })
+      })
+      .catch(next)
   })
 }

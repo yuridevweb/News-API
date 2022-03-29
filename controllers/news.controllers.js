@@ -4,6 +4,7 @@ const {
   commentsByArticle,
   updateArticle,
   selectUsers,
+  selectArticles,
 } = require('../models/news.models')
 
 exports.getTopics = (req, res) => {
@@ -24,7 +25,7 @@ exports.getArticleById = (req, res, next) => {
     .then((results) => {
       const article = results[0]
       const { count } = results[1]
-      //article.comment_count = count
+      article.comment_count = Number(count)
       res.status(200).send({ article, count })
     })
     .catch(next)
@@ -43,5 +44,12 @@ exports.patchArticleById = (req, res, next) => {
 exports.getUsers = (req, res) => {
   selectUsers().then((users) => {
     res.status(200).send({ users })
+  })
+}
+
+exports.getArticles = (req, res) => {
+  selectArticles().then((articles) => {
+    console.log(articles, '<<<<<<<<<')
+    res.status(200).send({ articles })
   })
 }

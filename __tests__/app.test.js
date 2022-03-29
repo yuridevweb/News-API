@@ -92,6 +92,27 @@ describe('PATCH /api/articles/:article_id', () => {
         })
       })
   })
+  test('status:200, negative vote (downvote) works too', () => {
+    const newVote = {
+      inc_votes: -5,
+    }
+    return request(app)
+      .patch('/api/articles/3')
+      .send(newVote)
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body
+        expect(article).toEqual({
+          article_id: 3,
+          author: 'icellusedkars',
+          body: 'some gifs',
+          created_at: '2020-11-03T09:12:00.000Z',
+          title: 'Eight pug gifs that remind me of mitch',
+          topic: 'mitch',
+          votes: -5,
+        })
+      })
+  })
 
   test('status: 400 respondes with a message for invalid article data property', () => {
     const articleData = {

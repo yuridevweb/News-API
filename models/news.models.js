@@ -14,6 +14,14 @@ exports.selectArticleById = (article_id) => {
   })
 }
 
+exports.commentsByArticle = (article_id) => {
+  const text = `SELECT COUNT(*) FROM comments WHERE article_id = $1;`
+  const values = [article_id]
+  return db.query(text, values).then((result) => {
+    return result.rows[0]
+  })
+}
+
 exports.updateArticle = (article_id, inc_votes) => {
   const text =
     'UPDATE articles SET votes = votes + $2 WHERE article_id = $1 RETURNING *;'

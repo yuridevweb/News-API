@@ -53,7 +53,7 @@ exports.getUsers = (req, res, next) => {
     .catch(next)
 }
 
-exports.getArticles = (req, res, next) => {
+/* exports.getArticles = (req, res, next) => {
   selectArticles().then((articles) => {
     const promises = []
     articles.forEach((article) => {
@@ -69,4 +69,11 @@ exports.getArticles = (req, res, next) => {
       })
       .catch(next)
   })
+} */
+exports.getArticles = (req, res, next) => {
+  selectArticles()
+    .then((articles) => {
+      res.status(200).send({ articles })
+    })
+    .catch(next)
 }

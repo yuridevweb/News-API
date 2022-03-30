@@ -159,7 +159,7 @@ describe('GET /api/topics', () => {
   })
 })
 
-describe('GET /api/articles', () => {
+describe.only('GET /api/articles', () => {
   test('status:200, responds with an array of article objects', () => {
     return request(app)
       .get('/api/articles')
@@ -178,7 +178,7 @@ describe('GET /api/articles', () => {
               title: expect.any(String),
               topic: expect.any(String),
               votes: expect.any(Number),
-              comment_count: expect.any(Number),
+              comment_count: expect.any(String),
             })
           )
         })

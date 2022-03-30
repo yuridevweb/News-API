@@ -7,12 +7,14 @@ const {
   selectArticles,
 } = require('../models/news.models')
 
-exports.getTopics = (req, res, next) => {
-  selectTopics()
-    .then((topics) => {
-      res.status(200).send({ topics: topics })
-    })
-    .catch(next)
+//Converting into Async
+exports.getTopics = async (req, res, next) => {
+  try {
+    const topics = await selectTopics()
+    res.send({ topics })
+  } catch (err) {
+    next(err)
+  }
 }
 
 exports.getArticleById = (req, res, next) => {

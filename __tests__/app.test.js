@@ -184,4 +184,18 @@ describe('GET /api/articles', () => {
         })
       })
   })
+  test('200: articles sorted by date in descending order.', () => {
+    return request(app)
+      .get('/api/articles')
+      .expect(200)
+      .then((res) => {
+        let previousArticle = {}
+        let isDesc = true
+        res.body.articles.forEach((article) => {
+          if (previousArticle.created_at < article.created_at) isDesc = false
+          previousArticle = article
+          expect(isDesc).toBe(true)
+        })
+      })
+  })
 })

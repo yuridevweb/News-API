@@ -1,9 +1,9 @@
 const db = require('../db/connection')
 
-exports.selectTopics = () => {
-  return db.query('SELECT * FROM topics').then((result) => {
-    return result.rows
-  })
+//Converting into Async
+exports.selectTopics = async () => {
+  const result = await db.query('SELECT * FROM topics')
+  return result.rows
 }
 
 exports.selectArticleById = (article_id) => {
@@ -41,7 +41,9 @@ exports.selectUsers = () => {
 }
 
 exports.selectArticles = () => {
-  return db.query('SELECT * FROM articles').then((result) => {
-    return result.rows
-  })
+  return db
+    .query('SELECT * FROM articles ORDER BY created_at DESC;')
+    .then((result) => {
+      return result.rows
+    })
 }

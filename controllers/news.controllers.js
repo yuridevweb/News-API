@@ -5,6 +5,7 @@ const {
   updateArticle,
   selectUsers,
   selectArticles,
+  selectComments,
 } = require('../models/news.models')
 
 //Converting into Async
@@ -70,10 +71,20 @@ exports.getUsers = (req, res, next) => {
       .catch(next)
   })
 } */
+
 exports.getArticles = (req, res, next) => {
   selectArticles()
     .then((articles) => {
       res.status(200).send({ articles })
+    })
+    .catch(next)
+}
+
+exports.getCommentsByArticle = (req, res, next) => {
+  const { article_id } = req.params
+  selectComments(article_id)
+    .then((comments) => {
+      res.status(200).send({ comments })
     })
     .catch(next)
 }

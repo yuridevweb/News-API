@@ -59,3 +59,10 @@ exports.selectArticles = () => {
     return result.rows
   })
 }
+exports.selectComments = (article_id) => {
+  const text = `SELECT * FROM comments WHERE article_id = $1;`
+  const values = [article_id]
+  return db.query(text, values).then((result) => {
+    return result.rows
+  })
+}

@@ -5,6 +5,7 @@ const {
   updateArticle,
   selectUsers,
   selectArticles,
+  selectComments,
 } = require('../models/news.models')
 
 exports.getTopics = (req, res) => {
@@ -41,15 +42,27 @@ exports.patchArticleById = (req, res, next) => {
     .catch(next)
 }
 
-exports.getUsers = (req, res) => {
-  selectUsers().then((users) => {
-    res.status(200).send({ users })
-  })
+exports.getUsers = (req, res, next) => {
+  selectUsers()
+    .then((users) => {
+      res.status(200).send({ users })
+    })
+    .catch(next)
 }
 
-exports.getArticles = (req, res) => {
-  selectArticles().then((articles) => {
-    console.log(articles, '<<<<<<<<<')
-    res.status(200).send({ articles })
-  })
+exports.getArticles = (req, res, next) => {
+  selectArticles()
+    .then((articles) => {
+      res.status(200).send({ articles })
+    })
+    .catch(next)
+}
+
+exports.getCommentsByArticle = (req, res, next) => {
+  const { article_id } = req.params
+  selectComments(article_id)
+    .then((comments) => {
+      res.status(200).send({ comments })
+    })
+    .catch(next)
 }

@@ -198,6 +198,35 @@ describe.only('GET /api/articles', () => {
         })
       })
   })
+  /* ================================================= */
+  test('200: sorts the articles by any valid column (defaults to date)', () => {
+    return request(app)
+      .get('/api/articles?sort_by=votes')
+      .expect(200)
+      .then((res) => {
+        let previousArticle = {}
+        let isDesc = true
+        res.body.articles.forEach((article) => {
+          if (previousArticle.votes < article.votes) isDesc = false
+          previousArticle = article
+          expect(isDesc).toBe(true)
+        })
+      })
+  })
+  test('200: sorts by order, which can be set, defaults to descending', () => {
+    return request(app)
+      .get('/api/articles?order=asc')
+      .expect(200)
+      .then((res) => {
+        let previousArticle = {}
+        let isAsc = true
+        res.body.articles.forEach((article) => {
+          if (previousArticle.created_at > article.created_at) isAsc = false
+          previousArticle = article
+          expect(isAsc).toBe(true)
+        })
+      })
+  })
 })
 
 describe('GET /api/articles/:article_id/comments', () => {

@@ -47,14 +47,14 @@ exports.selectUsers = () => {
       return result.rows
     })
 } */
-exports.selectArticles = () => {
+exports.selectArticles = (sort_by = 'created_at', order = 'DESC') => {
   let queryStr = `SELECT articles.article_id, articles.author, articles.created_at, 
                   articles.title, articles.topic, articles.votes,
     COUNT(comments.comment_id) AS comment_count FROM articles
     LEFT JOIN comments
     ON comments.article_id = articles.article_id
     GROUP BY articles.article_id
-    ORDER BY created_at DESC;`
+    ORDER BY ${sort_by} ${order};`
 
   return db.query(queryStr).then((result) => {
     return result.rows

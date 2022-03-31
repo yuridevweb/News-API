@@ -47,16 +47,42 @@ exports.selectUsers = () => {
       return result.rows
     })
 } */
-exports.selectArticles = () => {
+exports.selectArticles = (sort_by = 'created_at', order = 'DESC', topic) => {
+  const validQueries = [
+    'created_at',
+    'comment_count',
+    'votes',
+    'topic',
+    'title',
+    'author',
+    'article_id',
+  ]
+  if (!validQueries.includes(sort_by.toLowerCase())) {
+    return Promise.reject({ status: 400, message: 'Invalid sort_by' })
+  }
+  if (!['asc', 'desc'].includes(order.toLowerCase())) {
+    return Promise.reject({ status: 400, message: 'Invalid order query' })
+  }
+
   let queryStr = `SELECT articles.article_id, articles.author, articles.created_at, 
                   articles.title, articles.topic, articles.votes,
-    COUNT(comments.comment_id) AS comment_count FROM articles
-    LEFT JOIN comments
-    ON comments.article_id = articles.article_id
-    GROUP BY articles.article_id
-    ORDER BY created_at DESC;`
+                  COUNT(comments.comment_id) AS comment_count FROM articles
+                  LEFT JOIN comments
+                  ON comments.article_id = articles.article_id`
+  const queryValues = []
 
-  return db.query(queryStr).then((result) => {
+  if (topic) {
+    queryStr += ` WHERE articles.topic = $1`
+    queryValues.push(topic)
+  }
+
+  queryStr += ` GROUP BY articles.article_id 
+                ORDER BY ${sort_by} ${order};`
+
+  return db.query(queryStr, queryValues).then((result) => {
+    if (result.rows.length === 0) {
+      return Promise.reject({ status: 404, message: "Topic doesn't exist" })
+    }
     return result.rows
   })
 }

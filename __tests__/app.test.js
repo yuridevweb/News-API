@@ -189,12 +189,8 @@ describe('GET /api/articles', () => {
       .get('/api/articles')
       .expect(200)
       .then((res) => {
-        let previousArticle = {}
-        let isDesc = true
-        res.body.articles.forEach((article) => {
-          if (previousArticle.created_at < article.created_at) isDesc = false
-          previousArticle = article
-          expect(isDesc).toBe(true)
+        expect(res.body.articles).toBeSortedBy('created_at', {
+          descending: true,
         })
       })
   })
@@ -204,13 +200,7 @@ describe('GET /api/articles', () => {
       .get('/api/articles?sort_by=votes')
       .expect(200)
       .then((res) => {
-        let previousArticle = {}
-        let isDesc = true
-        res.body.articles.forEach((article) => {
-          if (previousArticle.votes < article.votes) isDesc = false
-          previousArticle = article
-          expect(isDesc).toBe(true)
-        })
+        expect(res.body.articles).toBeSortedBy('votes', { descending: true })
       })
   })
   test('200: sorts by order, which can be set, defaults to descending', () => {
@@ -218,13 +208,7 @@ describe('GET /api/articles', () => {
       .get('/api/articles?order=asc')
       .expect(200)
       .then((res) => {
-        let previousArticle = {}
-        let isAsc = true
-        res.body.articles.forEach((article) => {
-          if (previousArticle.created_at > article.created_at) isAsc = false
-          previousArticle = article
-          expect(isAsc).toBe(true)
-        })
+        expect(res.body.articles).toBeSortedBy('created_at')
       })
   })
 
@@ -233,12 +217,8 @@ describe('GET /api/articles', () => {
       .get('/api/articles?order=asc&sort_by=title&topic=mitch')
       .expect(200)
       .then((res) => {
-        let previousArticle = {}
-        let isAsc = true
+        expect(res.body.articles).toBeSortedBy('title')
         res.body.articles.forEach((article) => {
-          if (previousArticle.title > article.title) isAsc = false
-          previousArticle = article
-          expect(isAsc).toBe(true)
           expect(article.topic).toBe('mitch')
         })
       })

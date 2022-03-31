@@ -159,7 +159,7 @@ describe('GET /api/topics', () => {
   })
 })
 
-describe.only('GET /api/articles', () => {
+describe('GET /api/articles', () => {
   test('status:200, responds with an array of article objects', () => {
     return request(app)
       .get('/api/articles')
@@ -277,7 +277,20 @@ describe('POST /api/articles/:article_id/comments', () => {
       })
   })
 })
-
+/* ++++++++++++++++++++++++++++++++++++++++++ */
+describe('DELETE /api/comments/:comment_id', () => {
+  test('Status:204, delete the given comment by comment_id', () => {
+    return request(app)
+      .delete('/api/comments/1')
+      .expect(204)
+      .then(() => {
+        return db.query('SELECT * FROM comments WHERE comment_id = 1')
+      })
+      .then((res) => {
+        expect(res.rows).toEqual([])
+      })
+  })
+})
 /* Refactoring:
 -Change .message to .msg
 -Remove console.logs / commented out lines

@@ -7,6 +7,7 @@ const {
   selectArticles,
   selectComments,
   addComment,
+  removeComment,
 } = require('../models/news.models')
 
 //Converting into Async
@@ -97,4 +98,11 @@ exports.postComment = (req, res, next) => {
       res.status(201).send({ comment })
     })
     .catch(next)
+}
+
+exports.deleteComment = (req, res) => {
+  const { comment_id } = req.params
+  removeComment(comment_id).then(() => {
+    res.status(204).send({})
+  })
 }

@@ -6,6 +6,7 @@ const {
   getUsers,
   getArticles,
   getCommentsByArticle,
+  postComment,
 } = require('./controllers/news.controllers')
 
 const app = express()
@@ -17,6 +18,7 @@ app.get('/api/articles/:article_id', getArticleById)
 app.patch('/api/articles/:article_id', patchArticleById)
 app.get('/api/articles', getArticles)
 app.get('/api/articles/:article_id/comments', getCommentsByArticle)
+app.post('/api/articles/:article_id/comments', postComment)
 
 app.get('/api/users', getUsers)
 
@@ -28,7 +30,7 @@ app.all('/*', (req, res) => {
 
 //handle PSQL errors
 app.use((err, req, res, next) => {
-  const bedReqCodes = ['22P02']
+  const bedReqCodes = ['22P02', '23503']
   if (bedReqCodes.includes(err.code)) {
     res.status(400).send({ msg: 'Bad request' })
   } else {

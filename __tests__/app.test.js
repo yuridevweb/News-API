@@ -169,6 +169,7 @@ describe.only('GET /api/articles', () => {
         expect(articles).toBeInstanceOf(Array)
         expect(articles).toHaveLength(12)
         articles.forEach((article) => {
+          expect(article).not.toHaveProperty('body')
           expect(article).toEqual(
             expect.objectContaining({
               article_id: expect.any(Number),

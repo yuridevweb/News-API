@@ -159,7 +159,7 @@ describe('GET /api/topics', () => {
   })
 })
 
-describe.only('GET /api/articles', () => {
+describe('GET /api/articles', () => {
   test('status:200, responds with an array of article objects', () => {
     return request(app)
       .get('/api/articles')
@@ -198,7 +198,7 @@ describe.only('GET /api/articles', () => {
         })
       })
   })
-  /* ================================================= */
+
   test('200: sorts the articles by any valid column (defaults to date)', () => {
     return request(app)
       .get('/api/articles?sort_by=votes')
@@ -225,6 +225,49 @@ describe.only('GET /api/articles', () => {
           previousArticle = article
           expect(isAsc).toBe(true)
         })
+      })
+  })
+
+  test('200: filters by topic and sorts by given order, column', () => {
+    return request(app)
+      .get('/api/articles?order=asc&sort_by=title&topic=mitch')
+      .expect(200)
+      .then((res) => {
+        let previousArticle = {}
+        let isAsc = true
+        res.body.articles.forEach((article) => {
+          if (previousArticle.title > article.title) isAsc = false
+          previousArticle = article
+          expect(isAsc).toBe(true)
+          expect(article.topic).toBe('mitch')
+        })
+      })
+  })
+
+  test('400: responds with error message when passed bad order request', () => {
+    return request(app)
+      .get('/api/articles?order=invalid_order')
+      .expect(400)
+      .then((res) => {
+        expect(res.body.message).toBe('Invalid order query')
+      })
+  })
+
+  test('400: responds with error message when passed bad sort by', () => {
+    return request(app)
+      .get('/api/articles?sort_by=invalid')
+      .expect(400)
+      .then((res) => {
+        expect(res.body.message).toBe('Invalid sort_by')
+      })
+  })
+
+  test('Status:404, responds with an error given not existing filter query', () => {
+    return request(app)
+      .get('/api/articles?topic=not_exist')
+      .expect(404)
+      .then((res) => {
+        expect(res.body.message).toBe("Topic doesn't exist")
       })
   })
 })

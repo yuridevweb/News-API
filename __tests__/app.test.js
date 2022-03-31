@@ -159,7 +159,7 @@ describe('GET /api/topics', () => {
   })
 })
 
-describe('GET /api/articles', () => {
+describe.only('GET /api/articles', () => {
   test('status:200, responds with an array of article objects', () => {
     return request(app)
       .get('/api/articles')
@@ -169,16 +169,32 @@ describe('GET /api/articles', () => {
         expect(articles).toBeInstanceOf(Array)
         expect(articles).toHaveLength(12)
         articles.forEach((article) => {
+          expect(article).not.toHaveProperty('body')
           expect(article).toEqual(
             expect.objectContaining({
+              article_id: expect.any(Number),
               author: expect.any(String),
-              body: expect.any(String),
               created_at: expect.any(String),
               title: expect.any(String),
               topic: expect.any(String),
               votes: expect.any(Number),
+              comment_count: expect.any(String),
             })
           )
+        })
+      })
+  })
+  test('200: articles sorted by date in descending order.', () => {
+    return request(app)
+      .get('/api/articles')
+      .expect(200)
+      .then((res) => {
+        let previousArticle = {}
+        let isDesc = true
+        res.body.articles.forEach((article) => {
+          if (previousArticle.created_at < article.created_at) isDesc = false
+          previousArticle = article
+          expect(isDesc).toBe(true)
         })
       })
   })

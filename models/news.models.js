@@ -48,7 +48,8 @@ exports.selectUsers = () => {
     })
 } */
 exports.selectArticles = () => {
-  let queryStr = `SELECT articles.*, 
+  let queryStr = `SELECT articles.article_id, articles.author, articles.created_at, 
+                  articles.title, articles.topic, articles.votes, 
     COUNT(comments.comment_id) AS comment_count FROM articles
     LEFT JOIN comments
     ON comments.article_id = articles.article_id

@@ -229,3 +229,57 @@ describe('GET /api/articles/:article_id/comments', () => {
       })
   })
 })
+
+describe('POST /api/articles/:article_id/comments', () => {
+  test('status:201, responds with the object of posted comment', () => {
+    const commentData = {
+      username: 'rogersop',
+      body: 'British following properties',
+    }
+    return request(app)
+      .post('/api/articles/3/comments')
+      .send(commentData)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body).toMatchObject({
+          comment: {
+            comment_id: 19,
+            article_id: 3,
+            votes: 0,
+            created_at: expect.any(String),
+            author: 'rogersop',
+            body: 'British following properties',
+          },
+        })
+      })
+  })
+  test('Status:400, when invalid article_id is passed', () => {
+    const commentData = {
+      username: 'rogersop',
+      body: 'British following properties',
+    }
+    return request(app)
+      .post('/api/articles/333/comments')
+      .send(commentData)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request')
+      })
+  })
+
+  test('Status:400, responds with error if incorrect data passed.', () => {
+    return request(app)
+      .post('/api/articles/2/comments')
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.message).toBe('Bad request')
+      })
+  })
+})
+
+/* Refactoring:
+-Change .message to .msg
+-Remove console.logs / commented out lines
+-
+ */

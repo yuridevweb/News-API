@@ -67,3 +67,16 @@ exports.selectComments = (article_id) => {
     return result.rows
   })
 }
+
+exports.addComment = (article_id, username, body) => {
+  if (username === undefined || body === undefined) {
+    return Promise.reject({ status: 400, message: 'Bad request' })
+  }
+  const text = `INSERT INTO comments ( author, body, article_id)
+  VALUES($1, $2, $3) RETURNING *;`
+  const values = [username, body, article_id]
+
+  return db.query(text, values).then((result) => {
+    return result.rows[0]
+  })
+}

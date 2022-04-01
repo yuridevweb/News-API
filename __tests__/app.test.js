@@ -12,6 +12,21 @@ afterAll(() => {
   if (db.end) db.end()
 })
 
+describe.only('GET /api', () => {
+  test('returns a JSON containing all of the available endpoints on the API', () => {
+    return request(app)
+      .get('/api')
+      .expect(200)
+      .then(({ body }) => {
+        apiKeys = Object.keys(body)
+        console.log(apiKeys[0], '<<<')
+
+        //expect(body).to.haveOwnProperty('GET /api')
+        expect(apiKeys[0]).toBe('GET /api')
+        expect(apiKeys[7]).toBe('GET /api/users')
+      })
+  })
+})
 describe('GET /api/topics', () => {
   test('status:200, responds with an array of topic objects', () => {
     return request(app)

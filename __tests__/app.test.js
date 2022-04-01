@@ -330,6 +330,41 @@ describe('POST /api/articles/:article_id/comments', () => {
   })
 })
 
+describe('DELETE /api/comments/:comment_id', () => {
+  test('Status:204, delete the given comment by comment_id', () => {
+    return request(app)
+      .delete('/api/comments/1')
+      .expect(204)
+      .then(() => {
+        return db.query('SELECT * FROM comments WHERE comment_id = 1')
+      })
+      .then((res) => {
+        expect(res.rows).toEqual([])
+      })
+  })
+  test("status:404 respondes with an error if comment_id doesn't exist yet", () => {
+    const comment_id = '3333'
+    return request(app)
+      .delete(`/api/comments/${comment_id}`)
+      .expect(404)
+      .then((res) => {
+        expect(res.body).toMatchObject({
+          message: `Comment ${comment_id} doesn\'t exist!`,
+        })
+      })
+  })
+  test('status:400 respondes with an error if comment_id is invalid', () => {
+    const comment_id = 'notAnID'
+    return request(app)
+      .delete(`/api/comments/${comment_id}`)
+      .expect(400)
+      .then((res) => {
+        expect(res.body).toMatchObject({
+          msg: `Bad request`,
+        })
+      })
+  })
+})
 /* Refactoring:
 -Change .message to .msg
 -Remove console.logs / commented out lines

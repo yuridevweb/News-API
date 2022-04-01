@@ -106,3 +106,17 @@ exports.addComment = (article_id, username, body) => {
     return result.rows[0]
   })
 }
+
+exports.removeComment = (comment_id) => {
+  const text = `DELETE FROM comments WHERE comment_id = $1 RETURNING *;`
+  const values = [comment_id]
+  return db.query(text, values).then((result) => {
+    if (result.rows.length === 0) {
+      return Promise.reject({
+        status: 404,
+        message: `Comment ${comment_id} doesn\'t exist!`,
+      })
+    }
+    return result.rows
+  })
+}

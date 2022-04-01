@@ -7,6 +7,7 @@ const {
   getArticles,
   getCommentsByArticle,
   postComment,
+  deleteComment,
 } = require('./controllers/news.controllers')
 
 const app = express()
@@ -22,6 +23,7 @@ app.post('/api/articles/:article_id/comments', postComment)
 
 app.get('/api/users', getUsers)
 
+app.delete('/api/comments/:comment_id', deleteComment)
 //Errors handling
 
 app.all('/*', (req, res) => {

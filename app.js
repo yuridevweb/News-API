@@ -9,12 +9,12 @@ const {
   postComment,
   deleteComment,
 } = require('./controllers/news.controllers')
-const { getApi } = require('./controllers/api.controllers')
+const { getAllEndpoints } = require('./controllers/api.controllers')
 
 const app = express()
 app.use(express.json())
 
-app.get('/api', getApi)
+app.get('/api', getAllEndpoints)
 
 app.get('/api/topics', getTopics)
 

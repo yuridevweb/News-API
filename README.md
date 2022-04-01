@@ -18,9 +18,10 @@ To install Node, go to: https://nodejs.org/en/download/
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 - Clone a copy of the repository on your machine using the below command:
-`code`
+```js
 https://github.com/yuridevweb/News-API.git
-`code`
+```
+
 
 ## Setting up DB enviroments
 

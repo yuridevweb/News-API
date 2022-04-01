@@ -1,4 +1,12 @@
-# News API
+# NC-News API
+Welcome to my back-end project at Northcoders. News API serving up a range of random data on a number of available endpoints.
+
+You can find the hosted version:
+https://nc-news-yuridev.herokuapp.com/api/
+
+## Getting Started & Installation
+
+
 
 ## Setting up DB enviroments
 

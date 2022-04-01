@@ -19,9 +19,6 @@ describe.only('GET /api', () => {
       .expect(200)
       .then(({ body }) => {
         apiKeys = Object.keys(body)
-        console.log(apiKeys[0], '<<<')
-
-        //expect(body).to.haveOwnProperty('GET /api')
         expect(apiKeys[0]).toBe('GET /api')
         expect(apiKeys[7]).toBe('GET /api/users')
       })

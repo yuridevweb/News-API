@@ -1,4 +1,5 @@
 # NC-News API
+
 Welcome to my back-end project at Northcoders. News API serving up a range of random data on a number of available endpoints.
 
 You can find the hosted version:
@@ -6,6 +7,20 @@ https://nc-news-yuridev.herokuapp.com/api/
 
 ## Getting Started & Installation
 
+### Prerequisites
+
+To run this API, you will need Node.js and Postgres installed on your machine.
+
+To install Postgres, go to: https://www.postgresql.org/download/
+To install Node, go to: https://nodejs.org/en/download/
+
+### Installation
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+- Clone a copy of the repository on your machine using the below command:
+```js
+https://github.com/yuridevweb/News-API.git
+```
 
 
 ## Setting up DB enviroments

@@ -3,6 +3,7 @@ const app = require('../app')
 const db = require('../db/connection')
 const seed = require('../db/seeds/seed')
 const testData = require('../db/data/test-data/index')
+const getAllEndpoints = require('../endpoints.json')
 
 beforeEach(() => {
   return seed(testData)
@@ -18,9 +19,7 @@ describe.only('GET /api', () => {
       .get('/api')
       .expect(200)
       .then(({ body }) => {
-        apiKeys = Object.keys(body)
-        expect(apiKeys[0]).toBe('GET /api')
-        expect(apiKeys[7]).toBe('GET /api/users')
+        expect(body).toEqual(getAllEndpoints)
       })
   })
 })

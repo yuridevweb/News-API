@@ -1,5 +1,5 @@
-const path = require('path')
+const api = require('../endpoints.json')
 
 exports.getAllEndpoints = (req, res, next) => {
-  res.sendFile('endpoints.json', { root: path.join(__dirname, '../') })
+  res.status(200).send(api)
 }

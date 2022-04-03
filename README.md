@@ -12,6 +12,7 @@ https://nc-news-yuridev.herokuapp.com/api/
 To run this API, you will need Node.js and Postgres installed on your machine.
 
 -To install Postgres, go to: https://www.postgresql.org/download/ v17.7.1
+
 -To install Node, go to: https://nodejs.org/en/download/ v12.9
 
 ### Installation

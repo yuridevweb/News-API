@@ -379,5 +379,7 @@ describe('DELETE /api/comments/:comment_id', () => {
 /* Refactoring:
 -Change .message to .msg
 -Remove console.logs / commented out lines
--
+-Restructure Tests
+-Follow best practise @at git
+-Change to async
  */

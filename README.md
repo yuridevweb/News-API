@@ -23,7 +23,7 @@ These instructions will get you a copy of the project up and running on your loc
 ```js
 https://github.com/yuridevweb/News-API.git
 ```
-Install the required dependencies:
+- Install the required dependencies:
 ```js
 npm install
 ```

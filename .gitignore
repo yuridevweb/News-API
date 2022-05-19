@@ -1,3 +1,5 @@
 node_modules
 .env.*
 view-db.*
+hosting.md
+error-handling.md
